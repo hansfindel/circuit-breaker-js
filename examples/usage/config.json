@@ -1,0 +1,9 @@
+{
+  "windowDuration":   1000,
+  "numBuckets":       10,
+  "timeoutDuration":  3000,
+  "errorThreshold":   50,
+  "volumeThreshold":  5,
+  "onCircuitOpen":    function() {console.log("onCircuitOpen")},
+  "onCircuitClose":   function() {console.log("onCircuitOpen")}
+}
