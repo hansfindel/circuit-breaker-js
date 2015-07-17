@@ -5,26 +5,26 @@
 
 (function() {
   var CircuitBreaker = function(opts) {
-    opts = opts || {};
+    opts                    = opts || {};
 
-    this.windowDuration  = opts.windowDuration  || 10000; // milliseconds
-    this.numBuckets      = opts.numBuckets      || 10;    // number
-    this.timeoutDuration = opts.timeoutDuration || 3000;  // milliseconds
-    this.errorThreshold  = opts.errorThreshold  || 50;    // percentage
-    this.volumeThreshold = opts.volumeThreshold || 5;     // number
+    this.windowDuration     = opts.windowDuration  || 10000; // milliseconds
+    this.numBuckets         = opts.numBuckets      || 10;    // number
+    this.timeoutDuration    = opts.timeoutDuration || 3000;  // milliseconds
+    this.errorThreshold     = opts.errorThreshold  || 50;    // percentage
+    this.volumeThreshold    = opts.volumeThreshold || 5;     // number
 
-    this.onCircuitOpen   = opts.onCircuitOpen   || function() {};
-    this.onCircuitClose  = opts.onCircuitClose  || function() {};
+    this.onCircuitOpen      = opts.onCircuitOpen   || function() {};
+    this.onCircuitClose     = opts.onCircuitClose  || function() {};
 
-    this._buckets = [this._createBucket()];
-    this._state = CircuitBreaker.CLOSED;
+    this._buckets           = [this._createBucket()];
+    this._state             = CircuitBreaker.CLOSED;
 
     this._startTicker();
   };
 
-  CircuitBreaker.OPEN = 0;
-  CircuitBreaker.HALF_OPEN = 1;
-  CircuitBreaker.CLOSED = 2;
+  CircuitBreaker.OPEN       = 0;
+  CircuitBreaker.HALF_OPEN  = 1;
+  CircuitBreaker.CLOSED     = 2;
 
   // Public API
   // ----------
@@ -39,18 +39,18 @@
   };
 
   CircuitBreaker.prototype.forceClose = function() {
-    this._forced = this._state;
-    this._state = CircuitBreaker.CLOSED;
+    this._forced  = this._state;
+    this._state   = CircuitBreaker.CLOSED;
   };
 
   CircuitBreaker.prototype.forceOpen = function() {
-    this._forced = this._state;
-    this._state = CircuitBreaker.OPEN;
+    this._forced  = this._state;
+    this._state   = CircuitBreaker.OPEN;
   };
 
   CircuitBreaker.prototype.unforce = function() {
-    this._state = this._forced;
-    this._forced = null;
+    this._state   = this._forced;
+    this._forced  = null;
   };
 
   CircuitBreaker.prototype.isOpen = function() {
@@ -73,7 +73,7 @@
       bucketIndex++;
 
       if (bucketIndex > self.numBuckets) {
-        bucketIndex = 0;
+        bucketIndex   = 0;
 
         if (self.isOpen()) {
           self._state = CircuitBreaker.HALF_OPEN;
@@ -157,12 +157,12 @@
       }
     }
     else {
-      var overErrorThreshold = metrics.errorPercentage > this.errorThreshold;
+      var overErrorThreshold  = metrics.errorPercentage > this.errorThreshold;
       var overVolumeThreshold = metrics.totalCount > this.volumeThreshold;
-      var overThreshold = overVolumeThreshold && overErrorThreshold;
+      var overThreshold       = overVolumeThreshold && overErrorThreshold;
 
       if (overThreshold) {
-        this._state = CircuitBreaker.OPEN;
+        this._state           = CircuitBreaker.OPEN;
         this.onCircuitOpen(metrics);
       }
     }
@@ -172,10 +172,10 @@
     var commonJS = typeof module != 'undefined' && module.exports;
 
     if (commonJS) {
-      module.exports = obj;
+      module.exports  = obj;
     }
     else {
-      window[name] = obj;
+      window[name]    = obj;
     }
   };
 
